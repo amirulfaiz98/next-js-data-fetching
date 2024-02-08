@@ -5,17 +5,20 @@ import Link from "next/link";
 
 function HomePage(props) {
   const { products } = props;
+  
   return (
     <ul>
       {products.map((product) => (
-        <li key={product.id}><Link href={`/${product.id}`}>{product.title}</Link></li>
+        <li key={product.id}>
+          <Link href={`/products/${product.id}`}>{product.title}</Link>
+        </li>
       ))}
     </ul>
   );
 }
 
 export async function getStaticProps(context) {
-  console.log('(Re-)Generating...');
+  console.log("(Re-)Generating...");
   const filepath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filepath);
   const data = JSON.parse(jsonData);
@@ -25,10 +28,10 @@ export async function getStaticProps(context) {
       redirect: {
         destination: "/no-data",
       },
-    }
+    };
   }
   if (data.products.length === 0) {
-    return { notFound: true};
+    return { notFound: true };
   }
 
   return {
