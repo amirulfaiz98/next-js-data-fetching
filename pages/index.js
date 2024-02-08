@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs/promises';
+import path from "path";
+import fs from "fs/promises";
 
 function HomePage(props) {
   const { products } = props;
@@ -13,13 +13,17 @@ function HomePage(props) {
 }
 
 export async function getStaticProps() {
-  const filepath = path.join(process.cwd(), 'data', 'dummy-backend.json')
+  console.log('(Re-)Generating...');
+  const filepath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filepath);
   const data = JSON.parse(jsonData);
 
-  return {props: {
-    products: data.products
-  }}
+  return {
+    props: {
+      products: data.products,
+    },
+    revalidate: 10,
+  };
 }
 
 export default HomePage;
